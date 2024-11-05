@@ -1,20 +1,19 @@
-import { View, Text } from "react-native";
+import { FlatList } from "react-native";
 import React from "react";
-import { Button, ButtonText } from "@/components/ui/button";
-import { Box } from "@/components/ui/box";
+import products from "@/assets/product.json";
+import ProductListItem from "@/components/ProductListItem";
 
 export default function HomeScreen() {
   return (
-    <View className="bg-violet-600">
-      <Text className="text-red-600">Home Screen</Text>
-
-      <Button size="md" variant="solid" action="negative">
-        <ButtonText>Hello World!</ButtonText>
-      </Button>
-
-      <Box className="bg-green-600 p-5">
-        <Text className="text-red-600">This is the Box</Text>
-      </Box>
-    </View>
+    <FlatList
+      data={products}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({ item }) => <ProductListItem product={item} />}
+      numColumns={2}
+      showsVerticalScrollIndicator={false}
+      contentContainerClassName="gap-2"
+      columnWrapperClassName="gap-2"
+      contentContainerStyle={{ padding: 8, backgroundColor: "#f7f2f2" }}
+    />
   );
 }
