@@ -1,14 +1,24 @@
 import { FlatList } from "react-native";
-import React from "react";
-import products from "@/assets/product.json";
 import ProductListItem from "@/components/ProductListItem";
+import { Product } from "@/type/product";
+import SkeletonProduct from "@/components/SkeletonProduct";
+import { Text } from "@/components/ui/text";
+import { useProducts } from "@/queries/products";
 
 export default function HomeScreen() {
+  const { data: products, isLoading, error } = useProducts();
+
+  if (error) {
+    return <Text>Error fetching products</Text>;
+  }
+
   return (
-    <FlatList
-      data={products}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => <ProductListItem product={item} />}
+    <FlatList<Product>
+      data={isLoading ? Array.from({ length: 10 }) : products}
+      keyExtractor={(_, index) => index.toString()}
+      renderItem={({ item }) =>
+        isLoading ? <SkeletonProduct /> : <ProductListItem product={item} />
+      }
       numColumns={2}
       showsVerticalScrollIndicator={false}
       contentContainerClassName="gap-2"
