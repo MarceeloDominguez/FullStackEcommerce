@@ -5,9 +5,12 @@ import { Link, Stack } from "expo-router";
 import { ShoppingCart, User } from "lucide-react-native";
 import { Pressable } from "react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useCart } from "@/store/cartStore";
+import { Text } from "@/components/ui/text";
 
 export default function RootLayout() {
   const queryClient = new QueryClient();
+  const cartItemsNum = useCart((state) => state.items.length);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -15,13 +18,17 @@ export default function RootLayout() {
         <Stack
           screenOptions={{
             animation: "fade",
-            headerRight: () => (
-              <Link href={"/cart"} asChild>
-                <Pressable>
-                  <ShoppingCart color="#000" size={20} />
-                </Pressable>
-              </Link>
-            ),
+            headerRight: () =>
+              cartItemsNum > 0 && (
+                <Link href={"/cart"} asChild>
+                  <Pressable className="flex-row gap-2 items-center">
+                    <ShoppingCart color="#000" size={20} />
+                    <Text className="text-lg font-normal mb-2 text-typography-700">
+                      {cartItemsNum}
+                    </Text>
+                  </Pressable>
+                </Link>
+              ),
           }}
         >
           <Stack.Screen

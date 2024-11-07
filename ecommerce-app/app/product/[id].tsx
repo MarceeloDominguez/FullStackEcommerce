@@ -10,10 +10,17 @@ import { View } from "react-native";
 import { Plus } from "lucide-react-native";
 import SkeletonProductDetails from "@/components/SkeletonProductDetails";
 import { useGetProductById } from "@/queries/products";
+import { useCart } from "@/store/cartStore";
 
 export default function ProductDetailsScreen() {
   const { id } = useLocalSearchParams();
   const { data: product, isLoading, error } = useGetProductById(Number(id));
+
+  const { addProduct } = useCart();
+
+  const addToCart = () => {
+    addProduct(product);
+  };
 
   if (error) {
     return <Text>Product not found!</Text>;
@@ -51,7 +58,7 @@ export default function ProductDetailsScreen() {
           </View>
           <Box className="flex-row items-center justify-between">
             <Heading size="md">$100.00</Heading>
-            <Button className="px-4 py-2 mr-0 sm:flex-1">
+            <Button className="px-4 py-2 mr-0 sm:flex-1" onPress={addToCart}>
               <ButtonText size="sm">Add to cart</ButtonText>
               <Plus color="#fff" size={18} />
             </Button>
