@@ -37,7 +37,13 @@ export default function RootLayout() {
               headerShadowVisible: false,
               title: "Shop",
               headerTitleAlign: "center",
-              headerLeft: () => <User color="#000" size={22} />,
+              headerLeft: () => (
+                <Link href={"/login"} asChild>
+                  <Pressable>
+                    <User color="#000" size={22} />
+                  </Pressable>
+                </Link>
+              ),
             }}
           />
           <Stack.Screen
@@ -51,6 +57,22 @@ export default function RootLayout() {
               title: "My Cart",
               headerTitleAlign: "center",
               headerTitleStyle: { fontSize: 16 },
+            }}
+          />
+          <Stack.Screen
+            name="(auth)/login"
+            options={{
+              title: "",
+              headerShadowVisible: false,
+              headerRight: () => null,
+            }}
+          />
+          <Stack.Screen
+            name="(auth)/register"
+            options={{
+              title: "",
+              headerShadowVisible: false,
+              headerRight: () => null,
             }}
           />
         </Stack>

@@ -30,7 +30,7 @@ export default function ProductDetailsScreen() {
     <Card className="p-5 rounded-none flex-1 bg-white justify-between">
       <Stack.Screen
         options={{
-          title: product?.name,
+          title: isLoading ? "Loading..." : product?.name,
           headerTitleAlign: "center",
           headerTitleStyle: { fontSize: 16 },
         }}
@@ -57,7 +57,7 @@ export default function ProductDetailsScreen() {
             </VStack>
           </View>
           <Box className="flex-row items-center justify-between">
-            <Heading size="md">$100.00</Heading>
+            <Heading size="md">${product.price}</Heading>
             <Button className="px-4 py-2 mr-0 sm:flex-1" onPress={addToCart}>
               <ButtonText size="sm">Add to cart</ButtonText>
               <Plus color="#fff" size={18} />
