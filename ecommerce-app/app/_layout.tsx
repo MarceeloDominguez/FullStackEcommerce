@@ -12,7 +12,7 @@ import { useAuth } from "@/store/authStore";
 export default function RootLayout() {
   const queryClient = new QueryClient();
   const cartItemsNum = useCart((state) => state.items.length);
-  const { token } = useAuth();
+  const { token, logout } = useAuth();
 
   const isLoggedIn = !!token;
 
@@ -43,7 +43,7 @@ export default function RootLayout() {
               headerTitleAlign: "center",
               headerLeft: () =>
                 isLoggedIn ? (
-                  <Pressable>
+                  <Pressable onPress={() => logout()}>
                     <LogOut color="#000" size={22} />
                   </Pressable>
                 ) : (
