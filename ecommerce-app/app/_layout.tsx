@@ -2,15 +2,19 @@ import "react-native-reanimated";
 import "../global.css";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import { Link, Stack } from "expo-router";
-import { ShoppingCart, User } from "lucide-react-native";
+import { LogOut, ShoppingCart, User } from "lucide-react-native";
 import { Pressable } from "react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useCart } from "@/store/cartStore";
 import { Text } from "@/components/ui/text";
+import { useAuth } from "@/store/authStore";
 
 export default function RootLayout() {
   const queryClient = new QueryClient();
   const cartItemsNum = useCart((state) => state.items.length);
+  const { token } = useAuth();
+
+  const isLoggedIn = !!token;
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -37,13 +41,18 @@ export default function RootLayout() {
               headerShadowVisible: false,
               title: "Shop",
               headerTitleAlign: "center",
-              headerLeft: () => (
-                <Link href={"/login"} asChild>
+              headerLeft: () =>
+                isLoggedIn ? (
                   <Pressable>
-                    <User color="#000" size={22} />
+                    <LogOut color="#000" size={22} />
                   </Pressable>
-                </Link>
-              ),
+                ) : (
+                  <Link href={"/login"} asChild>
+                    <Pressable>
+                      <User color="#000" size={22} />
+                    </Pressable>
+                  </Link>
+                ),
             }}
           />
           <Stack.Screen
