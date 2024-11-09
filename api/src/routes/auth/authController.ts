@@ -15,7 +15,14 @@ export async function register(req: Request, res: Response) {
       .values({ ...data, password: hashedPassword })
       .returning();
 
-    res.status(201).json({ user });
+    //create jwt token
+    const token = jwt.sign(
+      { userId: user.id, role: user.role },
+      "your-secret",
+      { expiresIn: "48h" }
+    );
+
+    res.status(201).json({ user, token });
   } catch (error) {
     res.status(500).send("Something went wrong");
   }
