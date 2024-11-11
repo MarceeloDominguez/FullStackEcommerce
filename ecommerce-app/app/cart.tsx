@@ -1,4 +1,4 @@
-import { FlatList } from "react-native";
+import { Alert, FlatList } from "react-native";
 import { Box } from "@/components/ui/box";
 import { VStack } from "@/components/ui/vstack";
 import { Image } from "@/components/ui/image";
@@ -6,11 +6,15 @@ import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { Button, ButtonText } from "@/components/ui/button";
 import { useCart } from "@/store/cartStore";
-import { Redirect } from "expo-router";
+import { Redirect, router } from "expo-router";
 import { CircleMinus, CirclePlus } from "lucide-react-native";
 import { HStack } from "@/components/ui/hstack";
+import { useAuth } from "@/store/authStore";
 
 export default function CartScreen() {
+  const { token } = useAuth();
+  const isLoggedIn = !!token;
+
   const {
     items: cartItems,
     resetCart,
@@ -20,7 +24,17 @@ export default function CartScreen() {
   } = useCart();
 
   const onCheckout = async () => {
-    resetCart();
+    if (isLoggedIn) {
+      resetCart();
+    } else {
+      Alert.alert("Login required", "You must be logged in to check out.", [
+        {
+          text: "Login",
+          onPress: () => router.push("/(auth)/login"),
+        },
+        { text: "Cancel", style: "cancel" },
+      ]);
+    }
   };
 
   if (cartItems.length === 0) {

@@ -8,9 +8,8 @@ import { Input, InputField, InputIcon } from "@/components/ui/input";
 import { EyeIcon, EyeOffIcon } from "lucide-react-native";
 import { ScrollView, TouchableOpacity } from "react-native";
 import { Link, Redirect } from "expo-router";
-import { useMutation } from "@tanstack/react-query";
-import { login } from "@/api/auth";
 import { useAuth } from "@/store/authStore";
+import { useLogin } from "@/queries/auth";
 
 export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,26 +19,22 @@ export default function LoginScreen() {
 
   const isLoggedIn = !!token;
 
-  const {
-    mutate: loginMutation,
-    isError,
-    isPending,
-  } = useMutation({
-    mutationFn: () => login(email, password),
-    onSuccess: (data) => {
-      console.log("Success login: ", data);
-      if (data.user && data.token) {
-        setUser(data.user);
-        setToken(data.token);
-      }
+  const { mutate: loginMutation, isError, isPending } = useLogin();
 
-      setEmail("");
-      setPassword("");
-    },
-    onError: (error) => {
-      console.log("Error login: ", error);
-    },
-  });
+  const handleLogin = () => {
+    loginMutation(
+      { email, password },
+      {
+        onSuccess: (data) => {
+          console.log("Success login: ", data);
+          if (data.user && data.token) {
+            setUser(data.user);
+            setToken(data.token);
+          }
+        },
+      }
+    );
+  };
 
   const handleShowPassword = () => {
     setShowPassword((showState) => {
@@ -89,7 +84,7 @@ export default function LoginScreen() {
               </TouchableOpacity>
             </Input>
           </VStack>
-          <Button onPress={() => loginMutation()}>
+          <Button onPress={handleLogin}>
             {isPending && <ButtonSpinner color="#fff" />}
             <ButtonText className="text-typography-0">Sing in</ButtonText>
           </Button>

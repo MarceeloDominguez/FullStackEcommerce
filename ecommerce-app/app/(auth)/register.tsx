@@ -8,9 +8,8 @@ import { Input, InputField, InputIcon } from "@/components/ui/input";
 import { EyeIcon, EyeOffIcon } from "lucide-react-native";
 import { ScrollView, TouchableOpacity } from "react-native";
 import { Link, Redirect } from "expo-router";
-import { useMutation } from "@tanstack/react-query";
-import { register } from "@/api/auth";
 import { useAuth } from "@/store/authStore";
+import { useRegister } from "@/queries/auth";
 
 export default function RegisterScreen() {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,33 +19,25 @@ export default function RegisterScreen() {
 
   const isLoggedIn = !!token;
 
-  const {
-    mutate: registerMutation,
-    isError,
-    isPending,
-  } = useMutation({
-    mutationFn: () => register(email, password),
-    onSuccess: (data) => {
-      console.log("Success register: ", data);
-      if (data.user && data.token) {
-        setUser(data.user);
-        setToken(data.token);
-      }
-
-      setEmail("");
-      setPassword("");
-    },
-    onError: (error) => {
-      console.log("Error register: ", error);
-    },
-  });
+  const { mutate: registerMutation, isError, isPending } = useRegister();
 
   const handleRegister = () => {
     if (!email || !password) {
       return;
     }
 
-    registerMutation();
+    registerMutation(
+      { email, password },
+      {
+        onSuccess: (data) => {
+          console.log("Success register: ", data);
+          if (data.user && data.token) {
+            setUser(data.user);
+            setToken(data.token);
+          }
+        },
+      }
+    );
   };
 
   const handleShowPassword = () => {
