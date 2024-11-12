@@ -10,6 +10,8 @@ import { Redirect, router } from "expo-router";
 import { CircleMinus, CirclePlus } from "lucide-react-native";
 import { HStack } from "@/components/ui/hstack";
 import { useAuth } from "@/store/authStore";
+import { useMutation } from "@tanstack/react-query";
+import { createOrder } from "@/api/orders";
 
 export default function CartScreen() {
   const { token } = useAuth();
@@ -23,9 +25,27 @@ export default function CartScreen() {
     getTotalPrice,
   } = useCart();
 
+  const { mutate: createOrderMutation } = useMutation({
+    mutationFn: () =>
+      createOrder(
+        cartItems.map((item) => ({
+          productId: item.product.id,
+          quantity: item.quantity,
+          price: item.product.price,
+        }))
+      ),
+    onSuccess: (data) => {
+      console.log("Item order:", data);
+      resetCart();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   const onCheckout = async () => {
     if (isLoggedIn) {
-      resetCart();
+      createOrderMutation();
     } else {
       Alert.alert("Login required", "You must be logged in to check out.", [
         {
