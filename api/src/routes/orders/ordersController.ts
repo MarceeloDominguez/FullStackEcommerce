@@ -51,6 +51,25 @@ export async function listOrders(req: Request, res: Response) {
   }
 }
 
+export async function listOrdersByUser(req: Request, res: Response) {
+  try {
+    const userId = parseInt(req.params.userId);
+
+    const orders = await db
+      .select()
+      .from(ordersTable)
+      .where(eq(ordersTable.userId, userId));
+
+    if (orders.length === 0) {
+      res.status(404).send("Order not found");
+    }
+
+    res.json(orders);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+
 export async function getOrder(req: Request, res: Response) {
   try {
     const id = parseInt(req.params.id);
