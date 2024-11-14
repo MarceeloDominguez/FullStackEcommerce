@@ -23,7 +23,7 @@ router.post(
 );
 
 router.get("/", verifyToken, listOrders);
-router.get("/:userId", verifyToken, listOrdersByUser);
+router.get("/user/:userId", verifyToken, listOrdersByUser);
 router.get("/:id", verifyToken, getOrder);
 router.put("/:id", verifyToken, validateData(updateOrderSchema), updateOrder);
 
