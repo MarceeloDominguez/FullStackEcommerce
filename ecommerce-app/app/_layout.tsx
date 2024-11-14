@@ -2,12 +2,13 @@ import "react-native-reanimated";
 import "../global.css";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import { Link, Stack } from "expo-router";
-import { LogOut, ShoppingCart, User } from "lucide-react-native";
+import { ListOrdered, LogOut, ShoppingCart, User } from "lucide-react-native";
 import { Pressable } from "react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useCart } from "@/store/cartStore";
 import { Text } from "@/components/ui/text";
 import { useAuth } from "@/store/authStore";
+import { HStack } from "@/components/ui/hstack";
 
 export default function RootLayout() {
   const queryClient = new QueryClient();
@@ -22,17 +23,27 @@ export default function RootLayout() {
         <Stack
           screenOptions={{
             animation: "fade",
-            headerRight: () =>
-              cartItemsNum > 0 && (
-                <Link href={"/cart"} asChild>
-                  <Pressable className="flex-row gap-2 items-center">
-                    <ShoppingCart color="#000" size={20} />
-                    <Text className="text-lg font-normal mb-2 text-typography-700">
-                      {cartItemsNum}
-                    </Text>
-                  </Pressable>
-                </Link>
-              ),
+            headerRight: () => (
+              <HStack className="items-center gap-3">
+                {cartItemsNum > 0 && (
+                  <Link href={"/cart"} asChild>
+                    <Pressable className="flex-row gap-1 items-center">
+                      <ShoppingCart color="#000" size={20} />
+                      <Text className="text-md font-normal mb-2 text-typography-700">
+                        {cartItemsNum}
+                      </Text>
+                    </Pressable>
+                  </Link>
+                )}
+                {isLoggedIn && (
+                  <Link href={"/orders"} asChild>
+                    <Pressable>
+                      <ListOrdered color="#000" size={20} />
+                    </Pressable>
+                  </Link>
+                )}
+              </HStack>
+            ),
           }}
         >
           <Stack.Screen
@@ -66,6 +77,24 @@ export default function RootLayout() {
               title: "My Cart",
               headerTitleAlign: "center",
               headerTitleStyle: { fontSize: 16 },
+              headerRight: () => null,
+            }}
+          />
+          <Stack.Screen
+            name="orders"
+            options={{
+              headerShadowVisible: false,
+              title: "My Orders",
+              headerTitleAlign: "center",
+              headerTitleStyle: { fontSize: 16 },
+              headerRight: () => null,
+            }}
+          />
+          <Stack.Screen
+            name="order/[id]"
+            options={{
+              headerShadowVisible: false,
+              headerRight: () => null,
             }}
           />
           <Stack.Screen
