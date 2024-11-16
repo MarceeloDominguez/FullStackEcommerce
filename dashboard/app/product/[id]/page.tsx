@@ -8,8 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ArrowLeft, FilePenLine, Trash } from "lucide-react";
-import Link from "next/link";
+import { FilePenLine, Trash } from "lucide-react";
 
 export default async function ProductDetails({
   params: { id },
@@ -19,13 +18,8 @@ export default async function ProductDetails({
   const product = await getProductById(Number(id));
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 lg:ml-48 lg:mt-14 flex-1">
       <div className="md:w-3/4 container mx-auto p-4">
-        <Link href={"/"}>
-          <div className="w-12 h-12 flex items-center justify-center">
-            <ArrowLeft />
-          </div>
-        </Link>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
           <div className="flex justify-center items-center">
             <img
