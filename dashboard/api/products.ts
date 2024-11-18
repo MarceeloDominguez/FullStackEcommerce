@@ -13,7 +13,7 @@ export async function listProducts(): Promise<Product[]> {
   return data;
 }
 
-export async function getProductById(id: number) {
+export async function getProductById(id: number): Promise<Product> {
   const res = await fetch(`${API_URL}/products/${id}`);
   const data = await res.json();
 

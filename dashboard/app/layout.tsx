@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import Aside from "@/components/Aside";
+import QueryProvider from "@/util/providers/QueryProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,12 +31,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NavBar />
-        <div className="bg-slate-50 min-h-screen flex">
-          {/* Sidebar para pantallas grandes */}
-          <Aside />
-          {children}
-        </div>
+        <QueryProvider>
+          <NavBar />
+          <div className="bg-slate-50 min-h-screen flex">
+            {/* Sidebar para pantallas grandes */}
+            <Aside />
+            {children}
+          </div>
+        </QueryProvider>
       </body>
     </html>
   );
