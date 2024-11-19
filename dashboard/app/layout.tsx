@@ -4,6 +4,9 @@ import "./globals.css";
 import NavBar from "@/components/NavBar";
 import Aside from "@/components/Aside";
 import QueryProvider from "@/util/providers/QueryProvider";
+import { useAuth } from "@/store/authStore";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,6 +29,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // const cookieStore = cookies();
+  // const token = cookieStore.get("auth-token");
+
+  // console.log("Token en RootLayout:", token);
+
   return (
     <html lang="en">
       <body

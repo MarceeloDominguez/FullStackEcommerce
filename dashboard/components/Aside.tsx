@@ -1,7 +1,13 @@
+"use client";
 import { House, ListOrdered } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Aside() {
+  const pathname = usePathname();
+
+  if (pathname.includes("/auth")) return null;
+
   return (
     <aside className="hidden lg:flex lg:w-44 lg:flex-col bg-white p-4 fixed h-full lg:mt-12">
       <nav className="space-y-4">
