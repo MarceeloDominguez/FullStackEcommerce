@@ -28,7 +28,6 @@ export default function LoginPage() {
   const onSubmit = (data: { email: string; password: string }) => {
     loginMutation(data, {
       onSuccess: (res) => {
-        console.log("Login exitoso:", res);
         if (res.user && res.token) {
           setUser(res.user);
           setToken(res.token);

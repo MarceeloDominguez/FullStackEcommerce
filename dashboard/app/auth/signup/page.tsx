@@ -8,17 +8,49 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useRegister } from "@/queries/auth";
+import { useAuth } from "@/store/authStore";
+import { LoaderCircle } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 export default function SignupPage() {
+  const { mutate: registerMutation, isPending } = useRegister();
+  const { setToken, setUser, token } = useAuth();
+
+  const isLoggedIn = !!token;
+
   const form = useForm({
     defaultValues: { email: "", password: "" },
   });
 
   const onSubmit = (data: { email: string; password: string }) => {
+    if (!data.email || !data.password) {
+      return;
+    }
+
+    registerMutation(
+      { ...data },
+      {
+        onSuccess: (data) => {
+          if (data.user && data.token) {
+            setUser(data.user);
+            setToken(data.token);
+          }
+        },
+        onError: (error) => {
+          console.log("Error en el registro:", error);
+        },
+      }
+    );
+
     form.reset();
   };
+
+  if (isLoggedIn) {
+    return redirect("/");
+  }
 
   return (
     <div className="bg-slate-50 flex-1">
@@ -54,6 +86,11 @@ export default function SignupPage() {
               )}
             />
             <Button className="w-full" type="submit">
+              {isPending && (
+                <div className="animate-spin">
+                  <LoaderCircle />
+                </div>
+              )}
               Register
             </Button>
           </form>
