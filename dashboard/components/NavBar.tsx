@@ -11,13 +11,12 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/store/authStore";
 import { Button } from "./ui/button";
 
 export default function NavBar() {
   const router = useRouter();
-  const pathname = usePathname();
   const { token, logout } = useAuth();
 
   const isLoggedIn = !!token;
@@ -42,22 +41,18 @@ export default function NavBar() {
           E-commerce
         </Link>
       </div>
-      {!pathname.includes("/auth") && (
-        <>
-          {isLoggedIn ? (
-            <Button variant="secondary" onClick={handleLogout}>
-              <LogOut />
-              Logout
-            </Button>
-          ) : (
-            <Link href={"/auth/login"}>
-              <Button variant="secondary">
-                <LogIn />
-                Login
-              </Button>
-            </Link>
-          )}
-        </>
+      {isLoggedIn ? (
+        <Button variant="secondary" onClick={handleLogout}>
+          <LogOut />
+          Logout
+        </Button>
+      ) : (
+        <Link href={"/auth/login"}>
+          <Button variant="secondary">
+            <LogIn />
+            Login
+          </Button>
+        </Link>
       )}
     </nav>
   );
