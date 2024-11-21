@@ -6,6 +6,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRegister } from "@/queries/auth";
@@ -16,7 +17,7 @@ import { redirect } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 export default function SignupPage() {
-  const { mutate: registerMutation, isPending } = useRegister();
+  const { mutate: registerMutation, isPending, isError } = useRegister();
   const { setToken, setUser, token } = useAuth();
 
   const isLoggedIn = !!token;
@@ -68,7 +69,11 @@ export default function SignupPage() {
                 <FormItem className="mb-6 p-1">
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="seller@gmail.com" />
+                    <Input
+                      {...field}
+                      placeholder="seller@gmail.com"
+                      className={`${isError && "border-red-600"} `}
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -80,11 +85,21 @@ export default function SignupPage() {
                 <FormItem className="mb-6 p-1">
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="**********" />
+                    <Input
+                      {...field}
+                      placeholder="**********"
+                      type="password"
+                      className={`${isError && "border-red-600"}`}
+                    />
                   </FormControl>
                 </FormItem>
               )}
             />
+            {isError && (
+              <FormMessage className="mb-6 text-center">
+                Invalid credentials
+              </FormMessage>
+            )}
             <Button className="w-full" type="submit">
               {isPending && (
                 <div className="animate-spin">

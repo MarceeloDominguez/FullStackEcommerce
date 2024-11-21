@@ -1,6 +1,8 @@
 "use client";
 import { usePathname } from "next/navigation";
-import NavBar from "./NavBar";
+import dynamic from "next/dynamic";
+
+const NavBar = dynamic(() => import("./NavBar"), { ssr: false });
 
 export default function LayoutNavbar() {
   const pathname = usePathname();
