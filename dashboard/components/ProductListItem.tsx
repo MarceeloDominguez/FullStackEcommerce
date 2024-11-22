@@ -1,5 +1,4 @@
 "use client";
-
 import { Product } from "@/type/product";
 import {
   Card,
@@ -16,12 +15,15 @@ type ProductListItemProps = {
 };
 
 export default function ProductListItem({ product }: ProductListItemProps) {
+  const imageDefault =
+    "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/ecom/playstation5.jpg";
+
   return (
     <Link href={`/product/${product.id}`}>
       <Card key={product.id} className="hover:shadow-lg h-full">
         <CardHeader>
           <img
-            src={product.image}
+            src={product.image || imageDefault}
             alt={product.name}
             className="h-40 w-full object-contain rounded-md"
           />

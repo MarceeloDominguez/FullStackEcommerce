@@ -10,14 +10,19 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useGetProductById } from "@/queries/products";
+import { useAuth } from "@/store/authStore";
 import { FilePenLine, Trash } from "lucide-react";
 
-export default function ProductDetails({
-  params: { id },
-}: {
+type ParamsProps = {
   params: { id: string };
-}) {
-  const { data: product, isLoading } = useGetProductById(Number(id));
+};
+
+export default function ProductDetails({ params }: ParamsProps) {
+  const { data: product, isLoading } = useGetProductById(Number(params.id));
+  const { user } = useAuth();
+
+  const imageDefault =
+    "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/ecom/playstation5.jpg";
 
   return (
     <div className="min-h-screen bg-slate-50 lg:ml-48 lg:mt-14 flex-1">
@@ -27,14 +32,14 @@ export default function ProductDetails({
             <SkeletonProductDetails />
           ) : (
             <>
-              <div className="flex justify-center items-center">
+              <div className="flex justify-center items-center mt-2">
                 <img
-                  src={product?.image}
+                  src={product?.image || imageDefault}
                   alt={product?.name}
                   className="rounded-lg w-full md:max-w-md object-contain p-5 bg-white"
                 />
               </div>
-              <div className="flex justify-center">
+              <div className="flex justify-center mt-2">
                 <Card className="shadow-none border-none rounded-none w-full md:max-w-md bg-slate-50">
                   <CardHeader>
                     <CardTitle className="text-2xl font-bold">
@@ -47,16 +52,21 @@ export default function ProductDetails({
                       {product?.description}
                     </CardDescription>
                   </CardContent>
-                  <CardFooter className="flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <Button className="w-full sm:w-auto">
-                      <FilePenLine />
-                      Update Product
-                    </Button>
-                    <Button className="w-full sm:w-auto" variant="destructive">
-                      <Trash />
-                      Delete Product
-                    </Button>
-                  </CardFooter>
+                  {user?.role === "seller" && (
+                    <CardFooter className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                      <Button className="w-full sm:w-auto">
+                        <FilePenLine />
+                        Update Product
+                      </Button>
+                      <Button
+                        className="w-full sm:w-auto"
+                        variant="destructive"
+                      >
+                        <Trash />
+                        Delete Product
+                      </Button>
+                    </CardFooter>
+                  )}
                 </Card>
               </div>
             </>

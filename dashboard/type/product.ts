@@ -2,7 +2,7 @@ export interface Product {
   id: number;
   name: string;
   description: string;
-  image: File | null;
+  image: string | undefined;
   price: number;
 }
 
