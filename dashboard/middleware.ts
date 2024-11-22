@@ -20,5 +20,5 @@ export function middleware(request: NextRequest) {
 
 // Rutas donde se aplica el middleware
 export const config = {
-  matcher: ["/", "/orders", "/product/:path*"],
+  matcher: ["/", "/orders", "/product/:path*", "/create"],
 };

@@ -1,15 +1,17 @@
 "use client";
+import LayoutPage from "@/components/LayoutPage";
 import ProductListItem from "@/components/ProductListItem";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProducts } from "@/queries/products";
 import { SquarePlus } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   const { data: products, isLoading } = useProducts();
 
   return (
-    <div className="lg:w-3/4 container mx-auto p-4 lg:ml-48 mt-14 flex-1">
+    <LayoutPage>
       {isLoading ? (
         <Skeleton className="h-8 w-44 mb-6" />
       ) : (
@@ -27,15 +29,17 @@ export default function Home() {
           </>
         ) : (
           <>
-            <Card className="flex justify-center items-center md:h-full h-44 bg-slate-900 shadow-none border-none">
-              <SquarePlus size={100} color="#fff" />
-            </Card>
+            <Link href={"/create"}>
+              <Card className="flex justify-center items-center md:h-full h-44 bg-slate-900 shadow-none border-none">
+                <SquarePlus size={100} color="#fff" />
+              </Card>
+            </Link>
             {products?.map((product) => (
               <ProductListItem key={product.id} product={product} />
             ))}
           </>
         )}
       </div>
-    </div>
+    </LayoutPage>
   );
 }
