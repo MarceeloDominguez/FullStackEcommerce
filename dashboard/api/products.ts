@@ -1,5 +1,5 @@
 import { useAuth } from "@/store/authStore";
-import { InsertProduct, Product } from "@/type/product";
+import { Product } from "@/type/product";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -25,7 +25,7 @@ export async function getProductById(id: number): Promise<Product> {
   return data;
 }
 
-export async function createProduct(product: InsertProduct) {
+export async function createProduct(product: Omit<Product, "id">) {
   const token = useAuth.getState().token;
 
   const res = await fetch(`${API_URL}/products`, {
@@ -38,7 +38,42 @@ export async function createProduct(product: InsertProduct) {
   });
 
   if (!res.ok) {
-    console.log(res);
     throw new Error("Failed to create product");
+  }
+}
+
+export async function deleteProduct(id: number) {
+  const token = useAuth.getState().token;
+
+  const res = await fetch(`${API_URL}/products/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token!,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to delete product");
+  }
+}
+
+export async function updateProduct(
+  id: number,
+  updatedFields: Omit<Product, "id">
+) {
+  const token = useAuth.getState().token;
+
+  const res = await fetch(`${API_URL}/products/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token!,
+    },
+    body: JSON.stringify(updatedFields),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to update product");
   }
 }
