@@ -7,8 +7,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ChevronRight } from "lucide-react";
-import { Button } from "./ui/button";
 import { DateFormatter } from "@/lib/formatDate";
+import SelectStatus from "./SelectStatus";
 
 type OrderListProps = {
   order: Order;
@@ -23,9 +23,7 @@ export default function OrderList({ order }: OrderListProps) {
         <CardDescription className="mt-1">
           {DateFormatter(order.createdAt)}
         </CardDescription>
-        <Button variant="outline" className="mt-3">
-          Edit order
-        </Button>
+        <SelectStatus id={order.id} status={order.status} />
       </CardContent>
       <Link
         href={`/orders/order/${order.id}`}
