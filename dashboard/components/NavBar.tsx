@@ -1,5 +1,5 @@
 "use client";
-import { LogIn, LogOut, Menu } from "lucide-react";
+import { House, ListOrdered, LogIn, LogOut, Menu } from "lucide-react";
 import {
   Sheet,
   SheetClose,
@@ -33,8 +33,25 @@ export default function NavBar() {
           <SheetTrigger asChild>
             <Menu className="lg:hidden flex" />
           </SheetTrigger>
-          <SheetContent side="left">
-            <SheetDescription>Hola!</SheetDescription>
+          <SheetContent side="left" className="bg-slate-50 p-10">
+            <SheetDescription>
+              <nav className="space-y-4">
+                <Link
+                  href="/"
+                  className="text-sm font-medium bg-slate-50 hover:bg-slate-900 hover:text-white transition-colors duration-300 flex gap-2 items-center p-2 rounded-sm"
+                >
+                  <House size={18} />
+                  Home
+                </Link>
+                <Link
+                  href="/orders"
+                  className="text-sm font-medium bg-slate-50 hover:bg-slate-900 hover:text-white transition-colors duration-300 flex gap-2 items-center p-2 rounded-sm"
+                >
+                  <ListOrdered size={18} />
+                  Orders
+                </Link>
+              </nav>
+            </SheetDescription>
           </SheetContent>
         </Sheet>
         <Link href={"/"} className="text-lg font-bold">

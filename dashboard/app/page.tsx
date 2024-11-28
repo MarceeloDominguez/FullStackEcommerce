@@ -30,8 +30,8 @@ export default function Home() {
         ) : (
           <>
             <Link href={"/create"}>
-              <Card className="flex justify-center items-center md:h-full h-44 bg-slate-900 shadow-none border-none">
-                <SquarePlus size={100} color="#fff" />
+              <Card className="flex justify-center items-center md:h-full h-44 bg-slate-200 shadow-none border-none">
+                <SquarePlus size={100} color="#000" />
               </Card>
             </Link>
             {products?.map((product) => (
