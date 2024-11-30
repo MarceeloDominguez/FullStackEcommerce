@@ -25,20 +25,37 @@ export async function getProductById(id: number): Promise<Product> {
   return data;
 }
 
-export async function createProduct(product: Omit<Product, "id">) {
+// export async function createProduct(product: Omit<Product, "id">) {
+//   const token = useAuth.getState().token;
+
+//   const res = await fetch(`${API_URL}/products`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: token!,
+//     },
+//     body: JSON.stringify(product),
+//   });
+
+//   if (!res.ok) {
+//     throw new Error("Failed to create product");
+//   }
+// }
+
+export async function createProduct(product: FormData) {
   const token = useAuth.getState().token;
 
   const res = await fetch(`${API_URL}/products`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
       Authorization: token!,
     },
-    body: JSON.stringify(product),
+    body: product,
   });
 
   if (!res.ok) {
-    throw new Error("Failed to create product");
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error || "Failed to create product");
   }
 }
 

@@ -33,7 +33,9 @@ export default function ProductListItem({ product }: ProductListItemProps) {
           <p className="text-sm text-gray-500">${product.price}</p>
         </CardContent>
         <CardFooter>
-          <CardDescription>{product.description}</CardDescription>
+          <CardDescription className="line-clamp-4">
+            {product.description}
+          </CardDescription>
         </CardFooter>
       </Card>
     </Link>

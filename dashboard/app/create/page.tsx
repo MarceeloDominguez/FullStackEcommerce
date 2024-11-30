@@ -62,23 +62,42 @@ export default function Create() {
   });
 
   const handleCreateProduct = (data: DataForm) => {
-    createProduct(
-      {
-        name: data.name,
-        description: data.description,
-        image: undefined,
-        price: Number(data.price),
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("price", data.price);
+
+    if (data.image) {
+      formData.append("file", data.image);
+    }
+
+    createProduct(formData, {
+      onSuccess: () => {
+        form.reset();
+        router.push("/");
       },
-      {
-        onSuccess: () => {
-          form.reset();
-          router.push("/");
-        },
-        onError: (error) => {
-          console.log("Error al crear el producto:", error);
-        },
-      }
-    );
+      onError: (error) => {
+        console.log("Error al crear el producto:", error);
+      },
+    });
+
+    // createProduct(
+    //   {
+    //     name: data.name,
+    //     description: data.description,
+    //     image: undefined,
+    //     price: Number(data.price),
+    //   },
+    //   {
+    //     onSuccess: () => {
+    //       form.reset();
+    //       router.push("/");
+    //     },
+    //     onError: (error) => {
+    //       console.log("Error al crear el producto:", error);
+    //     },
+    //   }
+    // );
   };
 
   const handleUpdateProduct = (data: DataForm) => {
@@ -191,7 +210,7 @@ export default function Create() {
               <FormField
                 control={form.control}
                 name="image"
-                //rules={{ required: "You must select an image" }}
+                rules={{ required: "You must select an image" }}
                 render={({ field, fieldState }) => (
                   <FormItem className="mb-6 p-1">
                     <FormLabel>Select product image</FormLabel>
@@ -204,9 +223,9 @@ export default function Create() {
                         }}
                       />
                     </FormControl>
-                    {/* {fieldState.error && (
+                    {fieldState.error && (
                       <FormMessage>{fieldState.error.message}</FormMessage>
-                    )} */}
+                    )}
                   </FormItem>
                 )}
               />
@@ -217,12 +236,11 @@ export default function Create() {
                   </FormMessage>
                 ))}
               <Button className="w-full" type="submit">
-                {creatingProductIsPending ||
-                  (isPendingUpdatingProduct && (
-                    <div className="animate-spin">
-                      <LoaderCircle />
-                    </div>
-                  ))}
+                {(creatingProductIsPending || isPendingUpdatingProduct) && (
+                  <div className="animate-spin">
+                    <LoaderCircle />
+                  </div>
+                )}
                 {isUpdating ? "Update product" : "Add product"}
               </Button>
             </form>
