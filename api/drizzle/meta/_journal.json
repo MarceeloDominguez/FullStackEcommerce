@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1729546548161,
-      "tag": "0000_tan_warbird",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1729798551785,
-      "tag": "0001_loud_phil_sheldon",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1729886197091,
-      "tag": "0002_tense_cammi",
+      "when": 1732914682142,
+      "tag": "0000_abnormal_tyrannus",
       "breakpoints": true
     }
   ]
